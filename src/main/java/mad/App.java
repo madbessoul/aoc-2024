@@ -38,15 +38,16 @@ public class App {
         Instant end = Instant.now();
 
         System.out.println(partOneResult);
-        System.out.println("Time: " + Duration.between(start, end).toMillis() + " ms");
+        System.out.println("Total time: " + Duration.between(start, end).toMillis() + " ms");
 
-        System.out.println("Day " + day + " Part 1");
+        System.out.println("---");
+        System.out.println("Day " + day + " Part 2");
         Instant start2 = Instant.now();
         var partTwoResult = DAYS.get(day).part2(fileName);
         Instant end2 = Instant.now();
 
         System.out.println(partTwoResult);
-        System.out.println("Time: " + Duration.between(start2, end2).toMillis() + " ms");
+        System.out.println("Total time: " + Duration.between(start2, end2).toMillis() + " ms");
     }
 
 
