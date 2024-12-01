@@ -1,6 +1,5 @@
 package mad;
 
-import mad.day00.Day00;
 import mad.day01.Day01;
 
 import java.util.HashMap;
@@ -12,7 +11,6 @@ public class App {
 
     static {
         DAYS = new HashMap<>();
-        DAYS.put(0, new Day00());
         DAYS.put(1, new Day01());
     }
 
@@ -25,12 +23,12 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int day = 0;
+        int day = 1;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
         }
 
-        int part = 1;
+        int part = 2;
         if(args.length > 1){
             part = Integer.parseInt(args[1]);
         }
