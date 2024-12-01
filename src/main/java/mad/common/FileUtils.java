@@ -4,15 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class FileUtils {
-    public static String getResourceFilename(String filename) {
-        return ClassLoader.getSystemResource(filename).getFile();
+
+    public static String getResourceFilePath(String fileName) {
+        return Paths.get("/home/mad/dev/aoc-2024/aoc-2024/src/main/resources", fileName).toString();
     }
 
     public static List<String> readLines(String filename) {
-        String fileResource = getResourceFilename(filename);
+        String fileResource = getResourceFilePath(filename);
         try {
             return Files.readAllLines(Paths.get(fileResource));
         } catch (IOException e) {
@@ -21,7 +23,7 @@ public class FileUtils {
     }
 
     public static Stream<Integer> readInts(String filename) {
-        String fileResource = getResourceFilename(filename);
+        String fileResource = getResourceFilePath(filename);
         return readLines(fileResource).stream().map(Integer::parseInt);
     }
 
