@@ -81,26 +81,20 @@ public class Day02 implements Day {
             int[] failureIndices = new int[]{i-1, i, i+1};
 
             if (Math.abs(numberList[i] - numberList[i + 1]) > 3) {
-                System.out.println("Too big jump at " + i);
                 return failureIndices;
             }
 
             if (numberList[i] == numberList[i + 1]) {
-                System.out.println("Stable at " + i);
                 return failureIndices;
             }
 
-            String lastChange = "";
             if (numberList[i] > numberList[i + 1]) {
-                lastChange = "decreasing";
                 increasing = false;
             } else if (numberList[i] < numberList[i + 1]) {
-                lastChange = "increasing";
                 decreasing = false;
             }
 
             if (!increasing && !decreasing) {
-                System.out.println(lastChange + " at " + i);
                 return failureIndices;
             }
         }
