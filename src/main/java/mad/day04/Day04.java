@@ -40,12 +40,11 @@ public class Day04 implements Day {
 
     private String getWordInDirection(Map<Loc, Character> grid, Loc loc, String direction, int distance) {
         List<Loc> directionCoords = getDirectionCoords(loc, direction, distance);
-        String word =  directionCoords.stream()
+        return directionCoords.stream()
                 .map(grid::get)
                 .filter(Objects::nonNull)
                 .map(c -> Character.toString(c))
                 .collect(Collectors.joining());
-        return word;
     }
 
     private Long countXMAS(Map<Loc, Character> grid, Loc loc) {
@@ -57,10 +56,11 @@ public class Day04 implements Day {
 
     private boolean isAStar(Map<Loc, Character> grid, Loc loc) {
         List<String> allowedWords = List.of("SSMM", "MMSS","MSSM","SMMS");
-        String neighbourWord = Stream.of("NE","SE","SW","NW")
+        return Stream.of("NE","SE","SW","NW")
                 .map(direction -> getWordInDirection(grid, loc, direction, 1))
-                .collect(Collectors.joining());
-        return allowedWords.contains(neighbourWord);
+                .reduce(String::concat)
+                .map(allowedWords::contains)
+                .orElse(false);
     }
 
     @Override
