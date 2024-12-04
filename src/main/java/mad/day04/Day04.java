@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Day04 implements Day {
@@ -23,27 +24,28 @@ public class Day04 implements Day {
         return grid;
     }
 
-    private List<Loc> getDirectionCoords(Loc loc, String direction) {
+    private List<Loc> getDirectionCoords(Loc loc, String direction, int distance) {
         return switch (direction) {
-            case "N" -> List.of(new Loc(loc.x(), loc.y() + 1), new Loc(loc.x(), loc.y() + 2), new Loc(loc.x(), loc.y() + 3));
-            case "S" -> List.of(new Loc(loc.x(), loc.y() - 1), new Loc(loc.x(), loc.y() - 2), new Loc(loc.x(), loc.y() - 3));
-            case "E" -> List.of(new Loc(loc.x() + 1, loc.y()), new Loc(loc.x() + 2, loc.y()), new Loc(loc.x() + 3, loc.y()));
-            case "W" -> List.of(new Loc(loc.x() - 1, loc.y()), new Loc(loc.x() - 2, loc.y()), new Loc(loc.x() - 3, loc.y()));
-            case "NE" -> List.of(new Loc(loc.x() + 1, loc.y() + 1), new Loc(loc.x() + 2, loc.y() + 2), new Loc(loc.x() + 3, loc.y() + 3));
-            case "SE" -> List.of(new Loc(loc.x() + 1, loc.y() - 1), new Loc(loc.x() + 2, loc.y() - 2), new Loc(loc.x() + 3, loc.y() - 3));
-            case "SW" -> List.of(new Loc(loc.x() - 1, loc.y() - 1), new Loc(loc.x() - 2, loc.y() - 2), new Loc(loc.x() - 3, loc.y() - 3));
-            case "NW" -> List.of(new Loc(loc.x() - 1, loc.y() + 1), new Loc(loc.x() - 2, loc.y() + 2), new Loc(loc.x() - 3, loc.y() + 3));
+            case "N" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x(), loc.y() + i)).toList();
+            case "S" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x(), loc.y() - i)).toList();
+            case "E" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x() + i, loc.y())).toList();
+            case "W" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x() - i, loc.y())).toList();
+            case "NE" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x() + i, loc.y() + i)).toList();
+            case "SE" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x() + i, loc.y() - i)).toList();
+            case "SW" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x() - i, loc.y() - i)).toList();
+            case "NW" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x() - i, loc.y() + i)).toList();
             default -> List.of();
         };
     }
 
     private String getWordInDirection(Map<Loc, Character> grid, Loc loc, String direction) {
-        List<Loc> directionCoords = getDirectionCoords(loc, direction);
+        List<Loc> directionCoords = getDirectionCoords(loc, direction, 3);
         String word =  directionCoords.stream()
                 .map(grid::get)
                 .filter(Objects::nonNull)
                 .map(c -> Character.toString(c))
                 .collect(Collectors.joining());
+        System.out.println(word);
         return word;
     }
 
