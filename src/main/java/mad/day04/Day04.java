@@ -38,22 +38,29 @@ public class Day04 implements Day {
         };
     }
 
-    private String getWordInDirection(Map<Loc, Character> grid, Loc loc, String direction) {
-        List<Loc> directionCoords = getDirectionCoords(loc, direction, 3);
+    private String getWordInDirection(Map<Loc, Character> grid, Loc loc, String direction, int distance) {
+        List<Loc> directionCoords = getDirectionCoords(loc, direction, distance);
         String word =  directionCoords.stream()
                 .map(grid::get)
                 .filter(Objects::nonNull)
                 .map(c -> Character.toString(c))
                 .collect(Collectors.joining());
-        System.out.println(word);
         return word;
     }
 
     private Long countXMAS(Map<Loc, Character> grid, Loc loc) {
         return Stream.of("N", "S", "E", "W", "NE","SE","SW","NW")
-                .map(direction -> getWordInDirection(grid, loc, direction))
+                .map(direction -> getWordInDirection(grid, loc, direction, 3))
                 .filter(word -> word.equals("MAS"))
                 .count();
+    }
+
+    private boolean isAStar(Map<Loc, Character> grid, Loc loc) {
+        List<String> allowedWords = List.of("SSMM", "MMSS","MSSM","SMMS");
+        String neighbourWord = Stream.of("NE","SE","SW","NW")
+                .map(direction -> getWordInDirection(grid, loc, direction, 1))
+                .collect(Collectors.joining());
+        return allowedWords.contains(neighbourWord);
     }
 
     @Override
@@ -70,6 +77,15 @@ public class Day04 implements Day {
 
     @Override
     public String part2(String filename) {
-        return "";
+        List<String> lines = FileUtils.readLines(filename);
+        Map<Loc, Character> grid = makeGridMap(lines);
+        Long starCount = grid.entrySet().stream()
+                .filter(e -> e.getValue() == Character.valueOf('A'))
+                .filter(e -> isAStar(grid, e.getKey()))
+                .count();
+
+        return String.valueOf(starCount);
     }
+
+
 }
