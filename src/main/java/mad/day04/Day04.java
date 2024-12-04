@@ -24,7 +24,7 @@ public class Day04 implements Day {
         return grid;
     }
 
-    private List<Loc> getDirectionCoords(Loc loc, String direction, int distance) {
+    private List<Loc> computeDirectionCoords(Loc loc, String direction, int distance) {
         return switch (direction) {
             case "N" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x(), loc.y() + i)).toList();
             case "S" -> IntStream.range(1, distance + 1).mapToObj(i -> new Loc(loc.x(), loc.y() - i)).toList();
@@ -38,8 +38,8 @@ public class Day04 implements Day {
         };
     }
 
-    private String getWordInDirection(Map<Loc, Character> grid, Loc loc, String direction, int distance) {
-        List<Loc> directionCoords = getDirectionCoords(loc, direction, distance);
+    private String findWordInDirection(Map<Loc, Character> grid, Loc loc, String direction, int distance) {
+        List<Loc> directionCoords = computeDirectionCoords(loc, direction, distance);
         return directionCoords.stream()
                 .map(grid::get)
                 .filter(Objects::nonNull)
@@ -49,7 +49,7 @@ public class Day04 implements Day {
 
     private Long countXMAS(Map<Loc, Character> grid, Loc loc) {
         return Stream.of("N", "S", "E", "W", "NE","SE","SW","NW")
-                .map(direction -> getWordInDirection(grid, loc, direction, 3))
+                .map(direction -> findWordInDirection(grid, loc, direction, 3))
                 .filter(word -> word.equals("MAS"))
                 .count();
     }
@@ -57,7 +57,7 @@ public class Day04 implements Day {
     private boolean isAStar(Map<Loc, Character> grid, Loc loc) {
         List<String> allowedWords = List.of("SSMM", "MMSS","MSSM","SMMS");
         return Stream.of("NE","SE","SW","NW")
-                .map(direction -> getWordInDirection(grid, loc, direction, 1))
+                .map(direction -> findWordInDirection(grid, loc, direction, 1))
                 .reduce(String::concat)
                 .map(allowedWords::contains)
                 .orElse(false);
