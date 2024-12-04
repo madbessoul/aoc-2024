@@ -3,6 +3,7 @@ package mad;
 import mad.day01.Day01;
 import mad.day02.Day02;
 import mad.day03.Day03;
+import mad.day04.Day04;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -18,6 +19,7 @@ public class App {
         DAYS.put(1, new Day01());
         DAYS.put(2, new Day02());
         DAYS.put(3, new Day03());
+        DAYS.put(4, new Day04());
     }
 
     private static String makeFilename(int day) {
@@ -29,7 +31,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int day = 3;
+        int day = 4;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
         }
