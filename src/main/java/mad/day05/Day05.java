@@ -33,16 +33,13 @@ public class Day05 implements Day {
         var ruleset = parseRules(filename);
         var updates = parseUpdates(filename);
 
-        final int[] sum = {0};
+        final Integer sum = updates.stream()
+                .filter(ruleset::validateUpdate)
+                .map(update -> update.get(update.size() / 2))
+                .reduce(Integer::sum)
+                .orElse(0);
 
-        updates.forEach(update -> {
-            if (ruleset.validateUpdate(update)) {
-                sum[0] += update.get(update.size() / 2);
-            }
-        }
-        );
-
-        return String.valueOf(sum[0]);
+        return String.valueOf(sum);
     }
 
     @Override
@@ -50,15 +47,12 @@ public class Day05 implements Day {
         var ruleset = parseRules(filename);
         var updates = parseUpdates(filename);
 
-        final int[] sum = {0};
+        final Integer sum = updates.stream()
+                .filter(update -> !ruleset.validateUpdate(update))
+                .map(update -> ruleset.subsequence(update).get(update.size() / 2))
+                .reduce(Integer::sum)
+                .orElse(0);
 
-        updates.forEach(update -> {
-            if (!ruleset.validateUpdate(update)) {
-                sum[0] += ruleset.subsequence(update).get(update.size() / 2);
-            }
-        }
-        );
-
-        return String.valueOf(sum[0]);
+        return String.valueOf(sum);
     }
 }

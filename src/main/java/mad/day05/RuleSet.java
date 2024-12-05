@@ -5,11 +5,10 @@ import java.util.*;
 
 public record RuleSet(List<Rule> rules) {
 
-    public RuleSet ruleSubSet(List<Integer> update) {
-        var newRuleSet = new RuleSet(
+    private RuleSet ruleSubSet(List<Integer> update) {
+        return new RuleSet(
                 this.rules().stream().filter(rule -> update.contains(rule.x()) && update.contains(rule.y())).toList()
                 );
-        return newRuleSet;
     }
 
     //TODO : Turn the ruleset into a sequence of integers that satisfy all rules
