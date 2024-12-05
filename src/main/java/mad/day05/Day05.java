@@ -17,7 +17,6 @@ public class Day05 implements Day {
                 })
                 .toList()
         );
-
     }
 
     private List<List<Integer>> parseUpdates(String filename) {
@@ -35,12 +34,14 @@ public class Day05 implements Day {
         var updates = parseUpdates(filename);
 
         final int[] sum = {0};
+
         updates.forEach(update -> {
             if (ruleset.validateUpdate(update)) {
                 sum[0] += update.get(update.size() / 2);
             }
         }
         );
+
         return String.valueOf(sum[0]);
     }
 
@@ -50,12 +51,14 @@ public class Day05 implements Day {
         var updates = parseUpdates(filename);
 
         final int[] sum = {0};
+
         updates.forEach(update -> {
             if (!ruleset.validateUpdate(update)) {
                 sum[0] += ruleset.subsequence(update).get(update.size() / 2);
             }
         }
         );
+
         return String.valueOf(sum[0]);
     }
 }
