@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Day06 implements Day {
 
-    private ImmutablePair<Map<Loc, Integer>, Loc> makeGridMap(List<String> lines) {
+    private Pair<Map<Loc, Integer>, Loc> makeGridMap(List<String> lines) {
         Map<Loc, Integer> grid = new HashMap<>();
         Loc startingLoc = null;
         for (int j = 0; j < lines.size(); j++) {
@@ -52,7 +52,7 @@ public class Day06 implements Day {
                 case 'E' -> nextLoc = new Loc(loc.x() + 1, loc.y());
                 case 'S' -> nextLoc = new Loc(loc.x(), loc.y() + 1);
                 case 'W' -> nextLoc = new Loc(loc.x() - 1, loc.y());
-                default -> throw new RuntimeException("Runnin' round and round in circles");
+                default -> throw new RuntimeException("Unturnable turn");
             }
 
             // *queue Wilhem scream*
@@ -108,8 +108,78 @@ public class Day06 implements Day {
         return String.valueOf(visited.size());
     }
 
+    private boolean testObstacleOnNextStep(Map<Loc, Integer> grid, Loc startingLoc, Loc obstacleLoc) {
+
+        Map<Loc, Integer> gridWithObstacle = new HashMap<>(grid);
+
+        gridWithObstacle.putAll(grid);
+        gridWithObstacle.put(obstacleLoc, 1);
+
+
+        // We start back at the beginning and going North, the loop isn't always a rectangle
+        var currentLoc = startingLoc;
+        var currentDirection = 'N';
+
+        boolean stopflag = false;
+        var visited = new HashMap<Loc, Character>();
+        visited.put(currentLoc, currentDirection);
+
+        while(!stopflag) {
+            try{
+                var nextStep = moveOneStep(gridWithObstacle, currentLoc, currentDirection);
+                currentLoc = nextStep.getLeft();
+                currentDirection = nextStep.getRight();
+
+                // If we come back to the same location and in the same direction, it means we've looped
+                if (visited.containsKey(currentLoc) && visited.get(currentLoc).equals(currentDirection)) {
+                    return true;
+                }
+
+                visited.put(currentLoc, currentDirection);
+            } catch (IndexOutOfBoundsException e) {
+                stopflag = true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String part2(String filename) {
-        return "";
+
+        // What do you mean DRY... we like it WET ! (also I'm lazy)
+        var parsedGrid = makeGridMap(FileUtils.readLines(filename));
+        var grid = parsedGrid.getLeft();
+        var startingLoc = parsedGrid.getRight();
+
+        var possibleObstacles = new HashSet<Loc>();
+
+        var currentDirection = 'N';
+        var currentLoc = startingLoc;
+        boolean stopFlag = false;
+
+        while(!stopFlag) {
+
+            try{
+                // Move and get new position and new direction
+                var nextStep = moveOneStep(grid, currentLoc, currentDirection);
+
+                // Test only if next location hasnn't been tested before, also if it's not the starting location
+                if (!possibleObstacles.contains(nextStep.getLeft()) && !nextStep.getLeft().equals(startingLoc)) {
+
+                    // We only test the next location on our path, no need to test every location
+                    if (testObstacleOnNextStep(grid, startingLoc, nextStep.getLeft())) {
+                        possibleObstacles.add(nextStep.getLeft());
+                    }
+                }
+                currentLoc = nextStep.getLeft();
+                currentDirection = nextStep.getRight();
+            } catch (IndexOutOfBoundsException e) {
+                // Stop if we step out of the grid
+                stopFlag = true;
+            }
+        }
+        return String.valueOf(possibleObstacles.size());
     }
+
+
 }
