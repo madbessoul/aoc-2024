@@ -2,6 +2,8 @@ package mad;
 
 import mad.day01.Day01;
 import mad.day02.Day02;
+import mad.day03.Day03;
+import mad.day09.Day09;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -16,6 +18,8 @@ public class App {
         DAYS = new HashMap<>();
         DAYS.put(1, new Day01());
         DAYS.put(2, new Day02());
+        DAYS.put(3, new Day03());
+        DAYS.put(9, new Day09());
     }
 
     private static String makeFilename(int day) {
@@ -27,7 +31,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int day = 2;
+        int day = 9;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
         }
