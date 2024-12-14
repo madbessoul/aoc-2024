@@ -13,6 +13,7 @@ import mad.day10.Day10;
 import mad.day11.Day11;
 import mad.day12.Day12;
 import mad.day13.Day13;
+import mad.day14.Day14;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -38,6 +39,7 @@ public class App {
         DAYS.put(11, new Day11());
         DAYS.put(12, new Day12());
         DAYS.put(13, new Day13());
+        DAYS.put(14, new Day14());
     }
 
     private static String makeFilename(int day) {
@@ -49,7 +51,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int day = 13;
+        int day = 14;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
         }
