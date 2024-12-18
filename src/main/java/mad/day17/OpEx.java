@@ -30,7 +30,8 @@ public class OpEx {
         };
     }
 
-    void dfs(List<Integer> prog, long currentValue, int position) {
+    void dfs(long currentValue, int position) {
+        List<Integer> prog = program.getOpseq();
         for (int i = 0; i < 8; i++) {
             program.setPointer(0);
             long newValue = (currentValue * 8) + i;
@@ -52,12 +53,12 @@ public class OpEx {
                 return;
             }
 
-            dfs(prog, newValue, position + 1);
+            dfs(newValue, position + 1);
         }
     }
 
     public void solveA() {
-        dfs(program.opseq, 0, 0);
+        dfs(0, 0);
     }
 
     private void runOp(int opcode, int operand) {
