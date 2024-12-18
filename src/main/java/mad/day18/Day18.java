@@ -83,7 +83,7 @@ public class Day18 implements Day {
         List<String> lines = FileUtils.readLines(filename);
 
         Loc blockingLoc = null;
-        for (int i = 1; i < lines.size(); i++) {
+        for (int i = 1024; i < lines.size(); i++) {
             var grid = makeGrid(lines, i, 71, 71);
             int shortestPathLength = findShortestPath(grid, new Loc(0, 0), new Loc(70, 70));
             if (shortestPathLength == -1) {
