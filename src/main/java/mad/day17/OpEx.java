@@ -5,7 +5,7 @@ public class OpEx {
     Memory memory;
     Program program;
     boolean verbose;
-    Long success;
+    Long bestValue;
 
     public OpEx(Memory memory, Program program, boolean verbose) {
         this.memory = memory;
@@ -13,7 +13,7 @@ public class OpEx {
         this.verbose = verbose;
 
         // ~inf
-        this.success = Long.MAX_VALUE;
+        this.bestValue = Long.MAX_VALUE;
     }
 
     private String getOperationName(int opcode) {
@@ -30,28 +30,29 @@ public class OpEx {
         };
     }
 
-    void dfs(List<Integer> prog, long cur, int pos) {
+    void dfs(List<Integer> prog, long currentValue, int position) {
         for (int i = 0; i < 8; i++) {
             program.setPointer(0);
-            long nextNum = (cur << 3) + i;
+            long newValue = (currentValue * 8) + i;
             this.memory = new Memory(
-                    (cur << 3) + i,
+                    (currentValue * 8) + i,
                     0L,
                     0L
             );
+
             List<Integer> execResult = exec();
 
-            if (!execResult.equals(prog.subList(prog.size() - pos - 1, prog.size()))) {
+            if (!execResult.equals(prog.subList(prog.size() - position - 1, prog.size()))) {
                 continue;
             }
 
             // update success if current value is better
-            if (pos == prog.size() - 1) {
-                this.success = Math.min(success, nextNum);
+            if (position == prog.size() - 1) {
+                this.bestValue = Math.min(bestValue, newValue);
                 return;
             }
 
-            dfs(prog, nextNum, pos + 1);
+            dfs(prog, newValue, position + 1);
         }
     }
 
